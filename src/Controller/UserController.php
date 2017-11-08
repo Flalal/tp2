@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return new Response('User');
+        return $this->render('user.html.twig');
     }
 
 }

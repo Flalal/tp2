@@ -5,25 +5,33 @@ security:
             memory:
                 users:
                     flo:
-                        password: flo
+                        password: $2y$10$6qH1slyXvLEToR6tCyOsmOvsv1FbVZNPxLCq9O6eHXnJK8mSG6lF2
                         roles: 'ROLE_USER'
                     admin:
-                        password: admin
+                        password: $2y$10$zMusf4FBGDLjrvRb1SiAfOBJhOO8KZ2Pw9TTjXyjlsYZ.0njvaddm
                         roles: 'ROLE_ADMIN'
     encoders:
         Symfony\Component\Security\Core\User\User:
-            algorithm: plaintext
+            algorithm: bcrypt
+            cost: 10
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER]
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: ~
-
+            form_login:
+                login_path: app_securitycontroller_login
+                check_path: app_securitycontroller_login
+            logout:
             # activate different ways to authenticate
 
-            http_basic: ~
+            #http_basic: ~
 
     access_control:
+        - {path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - {path: ^/user, roles: ROLE_USER }
         - {path: ^/admin, roles: ROLE_ADMIN }
